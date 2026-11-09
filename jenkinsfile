@@ -1,53 +1,16 @@
 pipeline {
-    
-    environment {
-        APP_NAME = "my-awesome-app"
-        DEPLOY_ENV = "production"
-    }
+    agent any
 
-    
     stages {
-        stage('Checkout') {
+        stage('Compile') {
             steps {
-                echo 'Pulling code from Git repository...'
-                
+                sh 'javac Helloworld.java'
             }
         }
-
-        stage('Build') {
+        stage('Run') {
             steps {
-                echo "Building application: ${env.APP_NAME}..."
-                
+                sh 'java Helloworld'
             }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running automated tests...'
-                // Examples of testing commands:
-                // sh 'npm test' 
-                // sh './mvnw test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo "Deploying to ${env.DEPLOY_ENV} server..."
-                
-            }
-        }
-    }
-
-    
-    post {
-        always {
-            echo 'Cleaning up workspace...'
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Sending notification emails...'
         }
     }
 }
